@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.meli.service.backend</groupId>
+    <artifactId>mutant</artifactId>
+    <version>1.0.0</version>
+    <name>meli-mutants</name>
+    <description>Microservicio de validación de mutantes</description>
+    <organization>
+        <name>MeLi</name>
+    </organization>
+
+    <properties>
+        <encoding>UTF-8</encoding>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <springfox-swagger.version>2.9.2</springfox-swagger.version>
+        <springfox-bean-validators.version>2.9.2</springfox-bean-validators.version>
+        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <com.fasterxml.jackson.core.version>2.12.3</com.fasterxml.jackson.core.version>
+        <mockito-object-injection.version>2.0.2</mockito-object-injection.version>
+        <aws-sdk.version>1.11.517</aws-sdk.version>
+        <log4j.version>2.17.1</log4j.version>
+        <lombok.version>1.18.8</lombok.version>
+        <swagger.codegen.version>3.0.18</swagger.codegen.version>
+        <javax.validation.version>2.0.1.Final</javax.validation.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Librerias Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-bean-validators</artifactId>
+            <version>${springfox-bean-validators.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger-ui.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Librerias de Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${com.fasterxml.jackson.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${com.fasterxml.jackson.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.core.version}</version>
+        </dependency>
+
+        <!-- Libreria de Mockito -->
+        <dependency>
+            <groupId>com.github.exabrial</groupId>
+            <artifactId>mockito-object-injection</artifactId>
+            <version>${mockito-object-injection.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Libreria de mapeos MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- AWS SDK -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>${aws-sdk.version}</version>
+        </dependency>
+
+        <!-- LOMBOK-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!-- Librerias de validacion -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.swagger.codegen.v3</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>${swagger.codegen.version}</version>
+                <executions>
+                    <execution>
+                        <?m2e execute onConfiguration?>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/templates/api.json</inputSpec>
+                            <language>spring</language>
+                            <output>${project.build.directory}/generated-sources/</output>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <apiPackage>com.meli.service.backend.mutant.controller.api</apiPackage>
+                            <modelPackage>com.meli.service.backend.mutant.controller.dto</modelPackage>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

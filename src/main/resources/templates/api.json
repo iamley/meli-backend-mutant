@@ -1,0 +1,276 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "Mutants",
+    "description": "Provee las funcionalidades para validar si un humano es mutante con base al ADN y las estadisticas de tales resultados."
+  },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "Path relativo global"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Mutant"
+    },
+    {
+      "name": "Report"
+    }
+  ],
+  "paths": {
+    "/mutant/stats": {
+      "get": {
+        "summary": "Devuelve las estadisticas de los resultados obtenidos en la validación de mutantes.",
+        "tags": [
+          "Report"
+        ],
+        "operationId": "statusMutants",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMutantResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMutantErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMutantErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mutant": {
+      "post": {
+        "summary": "Detecta sí un humano es mutante con base en la secuencia de ADN.",
+        "tags": [
+          "Mutant"
+        ],
+        "operationId": "validateMutant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateMutant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ValidateMutantResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateMutantResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "business error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateMutantErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateMutantErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Status": {
+        "description": "Contenedor de la respuesta de la petición",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Código de respuesta",
+            "type": "string",
+            "example": "TXN-000"
+          },
+          "description": {
+            "description": "Descripción de la respuesta del servicio",
+            "type": "string",
+            "example": "operación realizada con exito"
+          }
+        }
+      },
+      "StatusError": {
+        "description": "Contenedor de la respuesta de error de la petición",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Código de respuesta",
+            "type": "string",
+            "example": "TXN-001"
+          },
+          "description": {
+            "description": "Descripción de la respuesta del servicio",
+            "type": "string",
+            "example": "error inesperado en la ejecución del servicio"
+          }
+        }
+      },
+      "StatusMutantOutput": {
+        "description": "Objeto que contiene el body de respuesta",
+        "type": "object",
+        "properties": {
+          "count_mutant_dna": {
+            "description": "Cantidad de ADN Mutante",
+            "type": "number",
+            "example": 40
+          },
+          "count_human_dna": {
+            "description": "Cantidad de AND Humano",
+            "type": "number",
+            "example": 100
+          },
+          "ratio": {
+            "description": "Relación Mutantes/Humanos",
+            "type": "number",
+            "example": 0.4
+          }
+        },
+        "required": [
+          "count_mutant_dna",
+          "count_human_dna",
+          "ratio"
+        ]
+      },
+      "StatusMutantResponse": {
+        "description": "Contenedor de la respuesta a la consulta del estadisticas de las verificaciones de ADN.",
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/StatusMutantOutput"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "StatusMutantErrorResponse": {
+        "description": "Contenedor de la respuesta a la consulta del estadisticas de las verificaciones de ADN.",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/StatusError"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ValidateMutant": {
+        "description": "Contenedor de la peticion",
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/ValidateMutantInput"
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "ValidateMutantInput": {
+        "type": "object",
+        "description": "Información de ADN a validar",
+        "properties": {
+          "dna": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "ATGCGA",
+              "CAGTGC",
+              "TTATGT",
+              "AGAAGG",
+              "CCCCTA",
+              "TCACTG"
+            ]
+          }
+        },
+        "required": [
+          "dna"
+        ]
+      },
+      "ValidateMutantOutput": {
+        "type": "object",
+        "description": "Detalle de los parametros de pedir en Ecommerce",
+        "properties": {
+          "is_mutant": {
+            "type": "boolean",
+            "description": "Detalle de sí es mutante"
+          }
+        }
+      },
+      "ValidateMutantResponse": {
+        "description": "Objeto que contiene la validación del ADN.",
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/ValidateMutantOutput"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ValidateMutantErrorResponse": {
+        "description": "Objeto que contiene la validación del ADN.",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/StatusError"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    }
+  }
+}
