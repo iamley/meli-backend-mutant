@@ -51,13 +51,12 @@ public class MutantControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-
         request = new ValidateMutantDTO();
         request.setBody(getBody());
     }
 
     @Test
-    void ValidateMutantSuccess() throws Exception {
+    void validateMutantSuccess() throws Exception {
 
         MvcResult mvcResult = mockMvc
                 .perform(post("/mutant")
@@ -75,7 +74,7 @@ public class MutantControllerTest {
     }
 
     @Test
-    void ValidateMutantErrorListItem() throws Exception {
+    void validateMutantErrorListItem() throws Exception {
 
         List<String> listItems = new ArrayList<>();
         listItems.add("ATGC");
@@ -100,7 +99,7 @@ public class MutantControllerTest {
     }
 
     @Test
-    void ValidateMutantErrorNullRequest() throws Exception {
+    void validateMutantErrorNullRequest() throws Exception {
 
         request.getBody().setDna(null);
 
@@ -120,7 +119,7 @@ public class MutantControllerTest {
     }
 
     @Test
-    void ValidateMutantBadRequest() throws Exception {
+    void validateMutantBadRequest() throws Exception {
 
         List<String> listItems = new ArrayList<>();
         listItems.add("MTG");

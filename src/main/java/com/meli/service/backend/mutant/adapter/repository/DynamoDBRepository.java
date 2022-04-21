@@ -49,7 +49,7 @@ public class DynamoDBRepository {
 
     }
 
-    public Item scanItemsById(String tableName, String id) throws BusinessCapabilityException {
+    public Item scanItemById(String tableName, String id) throws BusinessCapabilityException {
 
         try {
 

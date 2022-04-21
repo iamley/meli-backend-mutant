@@ -15,7 +15,7 @@ public class AWSConfigTest {
     private AWSConfig awsConfig;
 
     @Test
-    void ConfigSuccess(){
+    void configSuccess(){
         ReflectionTestUtils.setField(awsConfig, "awsRegion", "us-west-1");
         assertNotNull(awsConfig.getClientDynamo());
     }

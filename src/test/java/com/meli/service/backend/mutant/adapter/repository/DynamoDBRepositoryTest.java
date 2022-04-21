@@ -40,7 +40,7 @@ public class DynamoDBRepositoryTest {
         when(mockTable.getItem((GetItemSpec) any())).thenReturn(responseDynamo());
 
         var result = assertThrows(BusinessCapabilityException.class,
-                () -> dynamoDBRepository.scanItemsById("tableName", "1"));
+                () -> dynamoDBRepository.scanItemById("tableName", "1"));
 
         assertEquals(DATABASE_ERROR.getCode(), result.getErrorCodeBusiness());
         Assert.assertNotNull(result);
