@@ -40,7 +40,7 @@ public class DynamoDBRepositoryTest {
         when(mockTable.getItem((GetItemSpec) any())).thenReturn(responseDynamo());
 
         var result = assertThrows(BusinessCapabilityException.class,
-                () -> dynamoDBRepository.scanItemById("tableName", "1"));
+                () -> dynamoDBRepository.scanItemsById("tableName", "1"));
 
         assertEquals(DATABASE_ERROR.getCode(), result.getErrorCodeBusiness());
         Assert.assertNotNull(result);
@@ -58,7 +58,7 @@ public class DynamoDBRepositoryTest {
 
         Item mockItem = new Item()
                 .withString("id", "8445f7c2-72bc-4e17-af1f-e7a2d2d243d7")
-                .withList("forms", listItems)
+                .withList("dna", listItems)
                 .withBoolean("mutant", true);
 
         return mockItem;

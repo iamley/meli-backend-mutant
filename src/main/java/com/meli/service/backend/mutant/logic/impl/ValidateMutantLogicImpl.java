@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +26,11 @@ import static com.meli.service.backend.mutant.enums.MLStatus.FATAL_ERROR;
 public class ValidateMutantLogicImpl implements ValidateMutantLogic {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ValidateMutantLogicImpl.class);
+
+    private static final String LABEL_ERROR = "Error generate {}";
+
+    @Value("${ml.ws.aws.table}")
+    private String tableName;
 
     @Autowired
     private DynamoDBRepository dynamoDBRepository;
@@ -46,13 +52,13 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
             mutantDTO.setIsMutant(reply);
             mutantDTO.setDna(dna.getBody().getDna());
 
-            dynamoDBRepository.saveItem("mutants", mutantDTO);
+            dynamoDBRepository.saveItem(tableName, mutantDTO);
             return response;
         } catch (BusinessCapabilityException e) {
-            LOGGER.error("Error generate {}", e);
+            LOGGER.error(LABEL_ERROR, e);
             throw new BusinessCapabilityException(e.getErrorCodeBusiness(), e.getErrorMessage());
         } catch (Exception e) {
-            LOGGER.error("Error generate {}", e);
+            LOGGER.error(LABEL_ERROR, e);
             throw new BusinessCapabilityException(FATAL_ERROR.getCode(), FATAL_ERROR.getDescription());
         }
     }
@@ -90,7 +96,7 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
 
             return isMutant;
         } catch (Exception e) {
-            LOGGER.error("Error generate {}", e);
+            LOGGER.error(LABEL_ERROR, e);
             throw new BusinessCapabilityException(
                     FATAL_ERROR.getCode(),
                     FATAL_ERROR.getDescription());

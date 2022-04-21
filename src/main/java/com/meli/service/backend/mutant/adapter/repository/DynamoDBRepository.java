@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import static com.meli.service.backend.mutant.enums.MLStatus.DATABASE_ERROR;
+import static com.meli.service.backend.mutant.enums.MLStatus.DB_ERROR;
 
 @Repository
 public class DynamoDBRepository {
@@ -43,13 +44,13 @@ public class DynamoDBRepository {
             return outcome;
 
         } catch (Exception exception) {
-            LOGGER.error("Error al guardar el objeto {}" , exception.getMessage());
-            throw new BusinessCapabilityException(DATABASE_ERROR.getCode(), DATABASE_ERROR.getDescription());
+            LOGGER.error("Error saving object {}" , exception.getMessage());
+            throw new BusinessCapabilityException(DB_ERROR.getCode(), DB_ERROR.getDescription());
         }
 
     }
 
-    public Item scanItemById(String tableName, String id) throws BusinessCapabilityException {
+    public Item scanItemsById(String tableName, String id) throws BusinessCapabilityException {
 
         try {
 
@@ -66,7 +67,7 @@ public class DynamoDBRepository {
             return outcome;
 
         } catch (Exception exception) {
-            LOGGER.error("Error al escanear el objeto {}" , exception.getMessage());
+            LOGGER.error("Failed to scan object {}" , exception.getMessage());
             throw new BusinessCapabilityException(DATABASE_ERROR.getCode(), DATABASE_ERROR.getDescription());
         }
 

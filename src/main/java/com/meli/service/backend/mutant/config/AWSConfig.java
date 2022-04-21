@@ -18,7 +18,7 @@ public class AWSConfig {
 
     @Bean
     public AmazonDynamoDBClient getClientDynamo() {
-        LOGGER.info("Iniciando cliente DynamoDB");
+        LOGGER.info("Starting DynamoDB client");
         return (AmazonDynamoDBClient) AmazonDynamoDBClientBuilder
                 .standard()
                 .withRegion(awsRegion)
