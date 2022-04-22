@@ -2,6 +2,9 @@ package com.meli.service.backend.mutant.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meli.service.backend.mutant.Application;
+import com.meli.service.backend.mutant.command.impl.ResultsStatisticsCommand;
+import com.meli.service.backend.mutant.command.impl.ValidateMutantCommand;
+import com.meli.service.backend.mutant.controller.dto.StatusMutantResponseDTO;
 import com.meli.service.backend.mutant.controller.dto.ValidateMutantDTO;
 import com.meli.service.backend.mutant.controller.dto.ValidateMutantInputDTO;
 import com.meli.service.backend.mutant.controller.dto.ValidateMutantResponseDTO;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,7 +49,10 @@ public class MutantControllerTest {
     private MutantController controller;
 
     @Mock
-    private ValidateMutantLogic validateMutantLogic;
+    private ValidateMutantCommand validateMutantCommand;
+
+    @Mock
+    private ResultsStatisticsCommand resultsStatisticsCommand;
 
     private ValidateMutantDTO request;
 
@@ -141,6 +148,21 @@ public class MutantControllerTest {
 
         var reply = objectMapper.readValue(resultContent, ValidateMutantResponseDTO.class);
         assertEquals(BAD_REQUEST.getCode(), reply.getStatus().getCode());
+    }
+
+    @Test
+    void resultsStatisticsSuccess() throws Exception {
+
+        MvcResult mvcResult = mockMvc
+                .perform(get("/mutant/stats"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        String resultContent = mvcResult.getResponse().getContentAsString();
+
+        var reply = objectMapper.readValue(resultContent, StatusMutantResponseDTO.class);
+        assertEquals(SUCCEED.getCode(), reply.getStatus().getCode());
     }
 
     private static ValidateMutantInputDTO getBody() {
