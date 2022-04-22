@@ -37,7 +37,7 @@ import static com.meli.service.backend.mutant.enums.MLStatus.BAD_REQUEST;
 @SpringBootTest(classes = Application.class, properties = { "spring.main.allow-bean-definition-overriding=true" })
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-public class MutantControllerTest {
+class MutantControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

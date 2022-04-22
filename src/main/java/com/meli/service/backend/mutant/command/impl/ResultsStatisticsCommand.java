@@ -11,6 +11,7 @@ import com.meli.service.backend.mutant.enums.ServerErrorCommon;
 import com.meli.service.backend.mutant.exception.BusinessCapabilityException;
 import com.meli.service.backend.mutant.logic.ResultsStatisticsLogic;
 import com.meli.service.backend.mutant.model.LoggerDataDTO;
+import com.meli.service.backend.mutant.model.StatusDataDTO;
 import com.meli.service.backend.mutant.utils.MeLiStatusResponseUtil;
 import com.meli.service.backend.mutant.utils.UtilityLog;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -42,6 +43,7 @@ public class ResultsStatisticsCommand implements MeLiUniqueCommand<StatusMutantR
     public MeLiResponseEntity<StatusMutantResponseDTO> execute() throws BusinessCapabilityException {
 
         var response = new StatusMutantResponseDTO();
+        var statusData = new StatusDataDTO();
         var status = new StatusDTO();
         StatusMutantOutputDTO statusMutantOutputDTO = null;
 
@@ -54,24 +56,30 @@ public class ResultsStatisticsCommand implements MeLiUniqueCommand<StatusMutantR
 
             statusMutantOutputDTO.setCountMutantDna(BigDecimal.valueOf(countOfMutant));
             statusMutantOutputDTO.setCountHumanDna(BigDecimal.valueOf(countOfHuman));
-            statusMutantOutputDTO.setRatio(BigDecimal.valueOf(ratio));
+            statusMutantOutputDTO.setRatio(ratio);
 
             status.setCode(SUCCEED.getCode());
             status.setDescription(SUCCEED.getDescription());
+            statusData.setCode(SUCCEED.getCode());
+            statusData.setDescription(SUCCEED.getDescription());
         } catch (BusinessCapabilityException e) {
             writeLog(e);
-            status.code(e.getErrorCodeBusiness());
-            status.description(e.getMessage());
+            status.setCode(e.getErrorCodeBusiness());
+            status.setDescription(e.getMessage());
+            statusData.setCode(e.getErrorCodeBusiness());
+            statusData.setDescription(e.getMessage());
         } catch (Exception e) {
             writeLog(e);
             status.setCode(MLStatus.FATAL_ERROR.getCode());
             status.setDescription(MLStatus.FATAL_ERROR.getDescription());
+            statusData.setCode(MLStatus.FATAL_ERROR.getCode());
+            statusData.setDescription(MLStatus.FATAL_ERROR.getDescription());
         }
 
         response.setBody(statusMutantOutputDTO);
         response.setStatus(status);
 
-        return new MeLiResponseEntity<>(response);
+        return new MeLiResponseEntity<>(response, statusData);
     }
 
     @Override

@@ -8,9 +8,11 @@ import com.meli.service.backend.mutant.exception.BusinessCapabilityException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class DynamoDBRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class DynamoDBRepositoryTest {
 
     @InjectMocks
     private DynamoDBRepository dynamoDBRepository;

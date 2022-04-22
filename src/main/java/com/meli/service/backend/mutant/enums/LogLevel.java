@@ -11,16 +11,6 @@ public enum LogLevel {
     DEBUG(3, "DEBUG");
 
     private final int code;
-
     private final String description;
-
-    public static LogLevel getValues(int code) {
-        for (LogLevel level : LogLevel.values()) {
-            if (level.getCode() == code) {
-                return level;
-            }
-        }
-        return null;
-    }
 
 }

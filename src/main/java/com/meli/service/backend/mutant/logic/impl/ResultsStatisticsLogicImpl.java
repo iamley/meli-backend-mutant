@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static com.meli.service.backend.mutant.enums.MLStatus.DATABASE_ERROR;
 import static com.meli.service.backend.mutant.enums.MLStatus.FATAL_ERROR;
 
@@ -44,16 +47,13 @@ public class ResultsStatisticsLogicImpl implements ResultsStatisticsLogic {
     }
 
     @Override
-    public Integer averageMutants(Integer countMutants, Integer countHumans) {
+    public BigDecimal averageMutants(Integer countMutants, Integer countHumans) {
 
-        Integer average;
+        BigDecimal average;
 
         try {
-            if(countHumans.equals(0)) {
-                average = countMutants/1;
-            } else {
-                average = countMutants/countHumans;
-            }
+            average = BigDecimal.valueOf(countHumans.equals(0) ? countHumans/1 : countMutants/countHumans);
+            average.setScale(1, ROUND_MODE);
         } catch (Exception e) {
             LOGGER.info(LABEL_ERROR, e);
             throw new BusinessCapabilityException(
@@ -62,4 +62,6 @@ public class ResultsStatisticsLogicImpl implements ResultsStatisticsLogic {
         }
         return average;
     }
+
+    private static final RoundingMode ROUND_MODE = RoundingMode.HALF_EVEN;
 }

@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
-public class BusinessCapabilityExceptionTest {
+class BusinessCapabilityExceptionTest {
 
     @Mock
     private BusinessCapabilityException businessCapabilityException;

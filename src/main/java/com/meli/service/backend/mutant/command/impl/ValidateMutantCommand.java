@@ -12,6 +12,7 @@ import com.meli.service.backend.mutant.enums.ServerErrorCommon;
 import com.meli.service.backend.mutant.exception.BusinessCapabilityException;
 import com.meli.service.backend.mutant.logic.ValidateMutantLogic;
 import com.meli.service.backend.mutant.model.LoggerDataDTO;
+import com.meli.service.backend.mutant.model.StatusDataDTO;
 import com.meli.service.backend.mutant.utils.MeLiStatusResponseUtil;
 import com.meli.service.backend.mutant.utils.UtilityLog;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ public class ValidateMutantCommand implements MeLiCommand<ValidateMutantDTO, Val
     public MeLiResponseEntity<ValidateMutantResponseDTO> execute(ValidateMutantDTO request) throws BusinessCapabilityException {
 
         var response = new ValidateMutantResponseDTO();
+        var statusData = new StatusDataDTO();
         var status = new StatusDTO();
         ValidateMutantOutputDTO validateMutantOutputDTO = null;
 
@@ -50,20 +52,26 @@ public class ValidateMutantCommand implements MeLiCommand<ValidateMutantDTO, Val
             validateMutantOutputDTO.setIsMutant(validateMutantLogic.invoke(request));
             status.setCode(SUCCEED.getCode());
             status.setDescription(SUCCEED.getDescription());
+            statusData.setCode(SUCCEED.getCode());
+            statusData.setDescription(SUCCEED.getDescription());
         } catch (BusinessCapabilityException e) {
             writeLog(e);
-            status.code(e.getErrorCodeBusiness());
-            status.description(e.getMessage());
+            status.setCode(e.getErrorCodeBusiness());
+            status.setDescription(e.getMessage());
+            statusData.setCode(e.getErrorCodeBusiness());
+            statusData.setDescription(e.getMessage());
         } catch (Exception e) {
             writeLog(e);
             status.setCode(MLStatus.FATAL_ERROR.getCode());
             status.setDescription(MLStatus.FATAL_ERROR.getDescription());
+            statusData.setCode(MLStatus.FATAL_ERROR.getCode());
+            statusData.setDescription(MLStatus.FATAL_ERROR.getDescription());
         }
 
         response.setBody(validateMutantOutputDTO);
         response.setStatus(status);
 
-        return new MeLiResponseEntity<>(response);
+        return new MeLiResponseEntity<>(response, statusData);
     }
 
     @Override

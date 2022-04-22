@@ -1,8 +1,10 @@
 package com.meli.service.backend.mutant.logic;
 
+import java.math.BigDecimal;
+
 public interface ResultsStatisticsLogic {
 
     Integer amountOfMutantOrHuman(Boolean value);
-    Integer averageMutants(Integer countMutants, Integer countHumans);
+    BigDecimal averageMutants(Integer countMutants, Integer countHumans);
 
 }
