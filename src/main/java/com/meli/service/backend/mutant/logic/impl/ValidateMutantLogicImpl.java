@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static com.meli.service.backend.mutant.enums.MLStatus.BAD_REQUEST;
 import static com.meli.service.backend.mutant.enums.MLStatus.EMPTY_BODY;
@@ -101,6 +103,10 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
         }
     }
 
+    public static final Predicate<Integer> isEqualToThree = value -> value >= 3;
+
+    public static final Function<Integer, Integer> consecutiveValidation = (count) -> isEqualToThree.test(count) ? 1 : 0;
+
     private Integer validateHorizontal(String dna) {
 
         Integer countRow = 0;
@@ -114,17 +120,15 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
                 if (value != dna.charAt(j+1)) {
                 } else {
                     count+=1;
-                    if(count == 3) {
-                        countRow+=1;
-                    }
+                    int val = consecutiveValidation.apply(count);
+                    countRow+=val;
                 }
             } else {
                 if (value != dna.charAt(j)) {
                 } else {
                     count+=1;
-                    if(count == 3){
-                        countRow+=1;
-                    }
+                    int val = consecutiveValidation.apply(count);
+                    countRow+=val;
                 }
             }
         }

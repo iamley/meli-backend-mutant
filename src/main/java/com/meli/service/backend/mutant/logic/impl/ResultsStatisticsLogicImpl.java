@@ -46,7 +46,7 @@ public class ResultsStatisticsLogicImpl implements ResultsStatisticsLogic {
     @Override
     public Integer averageMutants(Integer countMutants, Integer countHumans) {
 
-        Integer average = 0;
+        Integer average;
 
         try {
             if(countHumans.equals(0)) {
