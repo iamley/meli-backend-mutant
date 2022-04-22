@@ -4,7 +4,6 @@ import com.meli.service.backend.mutant.adapter.repository.DynamoDBRepository;
 import com.meli.service.backend.mutant.adapter.repository.dto.MutantDTO;
 import com.meli.service.backend.mutant.controller.dto.ValidateMutantDTO;
 import com.meli.service.backend.mutant.controller.dto.ValidateMutantInputDTO;
-import com.meli.service.backend.mutant.controller.dto.ValidateMutantOutputDTO;
 import com.meli.service.backend.mutant.exception.BusinessCapabilityException;
 import com.meli.service.backend.mutant.logic.ValidateMutantLogic;
 import lombok.extern.slf4j.Slf4j;
@@ -36,16 +35,15 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
     private DynamoDBRepository dynamoDBRepository;
 
     @Override
-    public ValidateMutantOutputDTO invoke(ValidateMutantDTO dna) {
-        try {
+    public Boolean invoke(ValidateMutantDTO dna) {
 
-            final var response = new ValidateMutantOutputDTO();
+        try {
             validateProfile(dna);
             LOGGER.info("Resquest send to service {}", dna);
 
             boolean reply = validateMutant(dna.getBody());
-            response.setIsMutant(reply);
-            LOGGER.info("Response send to service {}", response);
+
+            LOGGER.info("Response send to service {}", reply);
 
             MutantDTO mutantDTO = new MutantDTO();
             mutantDTO.setId(UUID.randomUUID().toString());
@@ -53,7 +51,7 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
             mutantDTO.setDna(dna.getBody().getDna());
 
             dynamoDBRepository.saveItem(tableName, mutantDTO);
-            return response;
+            return reply;
         } catch (BusinessCapabilityException e) {
             LOGGER.error(LABEL_ERROR, e);
             throw new BusinessCapabilityException(e.getErrorCodeBusiness(), e.getErrorMessage());

@@ -13,7 +13,8 @@ public enum MLStatus {
     EMPTY("0004","No data found to display status."),
     DATABASE_ERROR("0005", "Failed to connect to database."),
     INVALID_BODY("0006", "Error mapping the request."),
-    BAD_REQUEST("0007", "Bad request, missing input data in the request.");
+    BAD_REQUEST("0007", "Bad request, missing input data in the request."),
+    CIRCUIT_BREAKER("0008", "Error, services are currently unavailable, please try again.");
 
     private final String code;
     private final String description;

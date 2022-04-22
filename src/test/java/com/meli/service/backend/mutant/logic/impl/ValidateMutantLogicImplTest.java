@@ -44,7 +44,7 @@ public class ValidateMutantLogicImplTest {
 
         var result = implementation.invoke(request);
         assertNotNull(result);
-        assertEquals(true, result.isIsMutant());
+        assertEquals(true, result);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ValidateMutantLogicImplTest {
 
         var result = implementation.invoke(request);
         assertNotNull(result);
-        assertEquals(false, result.isIsMutant());
+        assertEquals(false, result);
     }
 
     @Test
