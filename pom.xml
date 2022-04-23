@@ -13,6 +13,7 @@
     <groupId>com.meli.service.backend</groupId>
     <artifactId>mutant</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>meli-mutants</name>
     <description>Microservicio de validación de mutantes</description>
     <organization>
@@ -147,6 +148,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
                 <version>${swagger.codegen.version}</version>
@@ -178,6 +183,11 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.meli.service.backend.mutant.Application</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
