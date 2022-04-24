@@ -56,7 +56,7 @@ public class ResultsStatisticsCommand implements MeLiUniqueCommand<StatusMutantR
 
             statusMutantOutputDTO.setCountMutantDna(BigDecimal.valueOf(countOfMutant));
             statusMutantOutputDTO.setCountHumanDna(BigDecimal.valueOf(countOfHuman));
-            statusMutantOutputDTO.setRatio(ratio);
+            statusMutantOutputDTO.setRatio(BigDecimal.valueOf(ratio));
 
             status.setCode(SUCCEED.getCode());
             status.setDescription(SUCCEED.getDescription());

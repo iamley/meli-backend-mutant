@@ -7,16 +7,8 @@ import com.amazonaws.services.dynamodbv2.document.ItemCollection;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.ScanOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.QueryRequest;
-import com.amazonaws.services.dynamodbv2.model.QueryResult;
-import com.amazonaws.services.dynamodbv2.model.Select;
 import com.meli.service.backend.mutant.adapter.repository.dto.MutantDTO;
 import com.meli.service.backend.mutant.exception.BusinessCapabilityException;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,29 +51,6 @@ public class DynamoDBRepository {
         } catch (Exception exception) {
             LOGGER.error("Error saving object {}" , exception.getMessage());
             throw new BusinessCapabilityException(DB_ERROR.getCode(), DB_ERROR.getDescription());
-        }
-
-    }
-
-    public Item scanItemsById(String tableName, String id) throws BusinessCapabilityException {
-
-        try {
-
-            DynamoDB dynamoDB = new DynamoDB(amazonDynamoDBClient);
-
-            GetItemSpec spec = new GetItemSpec()
-                    .withPrimaryKey("id", id);
-            LOGGER.info("Request send to dynamo {}", spec);
-
-            Table table = dynamoDB.getTable(tableName);
-            Item outcome = table.getItem(spec);
-            LOGGER.info("Response send to dynamo {}", outcome);
-
-            return outcome;
-
-        } catch (Exception exception) {
-            LOGGER.error("Failed to scan object {}" , exception.getMessage());
-            throw new BusinessCapabilityException(DATABASE_ERROR.getCode(), DATABASE_ERROR.getDescription());
         }
 
     }

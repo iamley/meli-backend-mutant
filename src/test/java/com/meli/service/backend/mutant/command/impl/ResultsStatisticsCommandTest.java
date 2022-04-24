@@ -85,7 +85,7 @@ class ResultsStatisticsCommandTest {
     void handleComplete() {
 
         Mockito.when(resultsStatisticsLogic.amountOfMutantOrHuman(Mockito.anyBoolean())).thenReturn(100);
-        Mockito.when(resultsStatisticsLogic.averageMutants(Mockito.anyInt(), Mockito.anyInt())).thenReturn(BigDecimal.valueOf(50));
+        Mockito.when(resultsStatisticsLogic.averageMutants(Mockito.anyInt(), Mockito.anyInt())).thenReturn(50F);
 
         final var response = resultsStatisticsCommand.execute();
 

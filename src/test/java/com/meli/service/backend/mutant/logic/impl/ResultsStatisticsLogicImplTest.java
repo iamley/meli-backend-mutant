@@ -13,8 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.math.BigDecimal;
-
 import static com.meli.service.backend.mutant.enums.MLStatus.DATABASE_ERROR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,7 +66,7 @@ class ResultsStatisticsLogicImplTest {
         var result = implementation.averageMutants(10, 20);
 
         assertNotNull(result);
-        assertEquals(BigDecimal.valueOf(0), result);
+        assertEquals(0.5F, result);
     }
 
     @Test
@@ -77,7 +75,16 @@ class ResultsStatisticsLogicImplTest {
         var result = implementation.averageMutants(40, 0);
 
         assertNotNull(result);
-        assertEquals(BigDecimal.valueOf(0), result);
+        assertEquals(0.0F, result);
+    }
+
+    @Test
+    void successOthersValuesAverageMutants() {
+
+        var result = implementation.averageMutants(40, 100);
+
+        assertNotNull(result);
+        assertEquals(0.4F, result);
     }
 
 }

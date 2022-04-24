@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -48,7 +47,7 @@ public class ValidateMutantLogicImpl implements ValidateMutantLogic {
             LOGGER.info("Response send to service {}", reply);
 
             MutantDTO mutantDTO = new MutantDTO();
-            mutantDTO.setId(UUID.randomUUID().toString());
+            mutantDTO.setId(dna.getBody().getDna().toString());
             mutantDTO.setIsMutant(reply);
             mutantDTO.setDna(dna.getBody().getDna());
 
